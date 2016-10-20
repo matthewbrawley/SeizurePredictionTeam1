@@ -127,5 +127,5 @@ for i = 1 : length(subjectNames)
     
     % Save the trained neural net
     save([dataDir filesep 'trained_deepnet_' subjectName '.mat'],'deepnet');
-%     clear deepnet
+    clear deepnet
 end
