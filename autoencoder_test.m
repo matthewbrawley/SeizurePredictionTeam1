@@ -29,12 +29,12 @@ clear
 close all
 
 %% Data Info
-dataDir 	 = 'E:\602\Seizure Prediction\data'; % customize to where data is stored
+dataDir 	 = 'C:\Users\rr\Documents\MATLAB'; % customize to where data is stored
 subjectNames = {'patient_1', 'patient_2', 'patient_3'};
 segmentTypes = {'test_1','test_2','test_3'};
 % segmentTypes = {'train_1','train_2','train_3'}; % uncomment to predict with training data
 % NOTE: Please make sure subjectNames & segmentTypes appear in pairs.
-submissionFile = 'sample_submission.csv';
+% submissionFile = 'sample_submission.csv';
 
 %% Read in test MAT files for each patient, and predict a label
 for i = 1 : length(segmentTypes)
@@ -42,12 +42,23 @@ for i = 1 : length(segmentTypes)
     segmentType = segmentTypes{i};
     
     % store all predicted test file labels in a "results.txt" file
-    fname = [dataDir filesep subjectName '_' segmentType '_results.txt'];
+    fname = [dataDir filesep  subjectName '_' segmentType '_results.txt'];
     filePtr = fopen(fname,'wt');
     fprintf(filePtr,'%6s %8s\n','File', 'Class');
     
+    %Open Database Connection
+    conn = database.ODBCConnection('MySeizureData','root','root'); % open a database connection
+    
+    %make the cursor point after last row of data
+    curs = exec(conn,'select * from seizure_data');
+    curs = fetch(curs);
+    curs.Data
+    
     % read all files from folder
     fileNames = dir([dataDir filesep segmentType filesep '*.mat']);
+    patientIdTemp = fileNames.name;
+    patientIdTemp2 = {patientIdTemp(1:1)};
+    patientId = str2double(patientIdTemp2);
     numFiles = length(fileNames);
     
     % load trained neural network
@@ -62,16 +73,25 @@ for i = 1 : length(segmentTypes)
         
         fName = fieldnames(f);
         eegData = f.(fName{1}).data'; % EEG data matrix
-        
+           
         % Estimate the class label using the deep network, deepnet.
         predictedValues = deepnet(eegData);
+        
+        colnames = {'patient_id','file_name','class','time_stamp'};
+        tablename = 'seizure_data';
         
         if sum(predictedValues(1,:)) > sum(predictedValues(2,:))
             % interictal segment, class 1 aka row 1
             fprintf(filePtr,'%s %d\r\n',fileNames(k).name,0);
+            data = {patientId,fileNames(k).name,0,{datestr(now,'yyyy-mm-dd HH:MM:SS')}};
+            data_table = cell2table(data,'VariableNames',colnames);
+            fastinsert(conn,tablename,colnames,data_table);
         else
             % preictal segment, class 2 aka row 2
             fprintf(filePtr,'%s %d\r\n',fileNames(k).name,1);
+            data = {patientId,fileNames(k).name,1,{datestr(now,'yyyy-mm-dd HH:MM:SS')}};
+            data_table = cell2table(data,'VariableNames',colnames);
+            fastinsert(conn,tablename,colnames,data_table);
         end
         
         % Plot the confusion matrix, if you know ground truth
@@ -83,13 +103,17 @@ for i = 1 : length(segmentTypes)
     end
     fclose(filePtr);
     
+    %close database connection
+    close(curs);
+    close(conn);
+    
     % Put all the input into the sumbission csv file
-    tb1 = readtable(fname,'Delimiter',' ');
-    tb1.Properties.VariableNames = {'File','Class'};
-    tb2 = readtable(submissionFile,'Delimiter','comma');
+   % tb1 = readtable(fname,'Delimiter',' ');
+   % tb1.Properties.VariableNames = {'File','Class'};
+   % tb2 = readtable(submissionFile,'Delimiter','comma');
  
-    [~,ind]= intersect(tb2.File,tb1.File);
-    tb2(ind,:) = tb1;
-    writetable(tb2,submissionFile,'Delimiter','comma');
+   % [~,ind]= intersect(tb2.File,tb1.File);
+   % tb2(ind,:) = tb1;
+   % writetable(tb2,submissionFile,'Delimiter','comma');
 
 end
