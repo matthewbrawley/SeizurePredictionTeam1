@@ -77,16 +77,16 @@ end
 
 %% Read data, compute and save features
 for i = 1:length(subjectNames)
-    for j = 1:length(segmentTypes)
+    %for j = 1:length(segmentTypes)
         
         % Specify patient to look at
         subjectName = subjectNames{i};
         % Specify segment type
-        segmentType = segmentTypes{j};
+        %segmentType = segmentTypes{j};
         
         % Read and count number of files associated with this segment type
         sourceDir = [dataDir filesep subjectName];
-        fileNames = dir([sourceDir filesep '*' segmentType '.mat']);
+        fileNames = dir([sourceDir filesep '*'  '.mat']);
         numFiles = length(fileNames);
         FileNames = {fileNames(:).name};
         FilePaths = fullfile(dataDir, subjectName, FileNames);
@@ -178,7 +178,7 @@ for i = 1:length(subjectNames)
             disp(['Done. Saved all features to ' savePath])
             
         end
-    end
+    %end
     
 end
 p = gcp('nocreate');

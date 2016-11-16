@@ -115,7 +115,7 @@ for i = 1:length(subjectNames)
     
     % Construct a regularized binomial regression
     disp('Construct a regularized binomial regression with Lasso GLM:')
-    [B,FitInfo] = lassoglm(X_train,Ylabel_train,'binomial','CV',cv_k,'RelTol',5e-2,'Options',statset('UseParallel',true));
+    [B,FitInfo] = lassoglm(real(X_train),Ylabel_train,'binomial','CV',cv_k,'RelTol',5e-2,'Options',statset('UseParallel',true));
     
     
     %% Store model to output dir

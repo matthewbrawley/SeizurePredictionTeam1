@@ -1,4 +1,4 @@
-function tb = step3_evaluate_models(subjectNames,options)
+function label = step3_evaluate_models(subjectNames,options)
 % STEP3_EVALUATE_MODELS evaluate the trained LASSO GLM
 %   See how well it does on the training data
 %       and how good it makes prediction on validation data
@@ -93,8 +93,8 @@ for i = 1:length(subjectNames)
     
     label_train = Ypreds_train > thres;
     % plot residuals
-    histogram(Ylabel_train - Ypreds_train)
-    title('Residuals from lassoglm model')
+    %histogram(Ylabel_train - Ypreds_train)
+    %title('Residuals from lassoglm model')
     
     %% Plot ROC curve for classification by lasso GLM
     [roc_X,roc_Y,~,auc] = perfcurve(Ylabel_train,Ypreds_train,1);
@@ -143,11 +143,11 @@ for i = 1:length(subjectNames)
     % disp(sum(label))
     save([modelDir filesep subjectName '_predict'],'label','exp_name')
     % save labels into the submission csv file
-    tb              = readtable(submissionFile,'Delimiter','comma');
-    file            = tb.File;
-    [~,ind]         = intersect(file,exp_name);
-    tb.Class(ind)   = label;
-    writetable(tb,submissionFile,'Delimiter','comma');
+   % tb              = readtable(submissionFile,'Delimiter','comma');
+    %file            = tb.File;
+    %[~,ind]         = intersect(file,exp_name);
+    %tb.Class(ind)   = label;
+    %writetable(tb,submissionFile,'Delimiter','comma');
 end
 %% Look at other verification statistics
 % Training error rate, test error rate, confusion matrix, etc.

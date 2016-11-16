@@ -19,9 +19,9 @@
 %% Get started
 close all; clear;  clc;
 % Customize the following paths to where you store your data
-dataDir      = '/project/ece601/Data/';      % data directory
-featureDir   = '/project/ece601/Feature/';  % feature directory
-modelDir     = '/project/ece601/Model/';    % model directory
+dataDir      = 'data';      % data directory
+featureDir   = 'Features';  % feature directory
+modelDir     = 'Models';    % model directory
 
 if ~exist(dataDir,'dir')
     mkdir(dataDir)
@@ -32,6 +32,7 @@ elseif ~exist(modelDir,'dir')
 end
 
 % In total there are three patients
+%subjectNames = {'train_1','train_2','train_3','test_1','test_2','test_3'};
 subjectNames = {'train_1','train_2','train_3','test_1','test_2','test_3'};
 segmentTypes = {'0','1'}; % Preictal (1) or interictal (0)
 
@@ -70,11 +71,11 @@ opt.thres                    = 0.5;   % modify according to your experience.
 opt.submissionFile           = 'sample_submission.csv';
 % NOTE: make sure the submission file is closed when executing MATLAB code.
 % Otherwise MATLAB won't be able to open submissionFile for writing.
-step3_evaluate_models(subjectNames(1:3),opt);
+training_label = step3_evaluate_models(subjectNames(1:3),opt);
 
 %% 4) Make seizure Prediction
 %     Prediction is made on test data, with the model trained from step 2.
 %
 % No need to calculate features if already did in step 1)
 opt.calculate = false;
-tb            = step4_predict_seizure(subjectNames(4:6),opt);
+testing_label    = step4_predict_seizure(subjectNames(4:6),opt);

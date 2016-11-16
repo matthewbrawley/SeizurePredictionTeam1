@@ -1,4 +1,4 @@
-function tb = step4_predict_seizure(subjectNames,options)
+function label = step4_predict_seizure(subjectNames,options)
 % STEP4_PREDICT_SEIZURE(SUBJECTNAMES,OPTIONS) predicts whether a test
 %   segment is preictal (1) or interictal (0)
 %
@@ -134,8 +134,8 @@ for i = 1:length(subjectNames) % loop over patients
     tb              = readtable(submissionFile,'Delimiter','comma');
     file            = tb.File;
     [~,ind]         = intersect(file,exp_name);
-    tb.Class(ind)   = label;
-    writetable(tb,submissionFile,'Delimiter','comma');
+    % tb.Class(ind)   = label;
+    % writetable(tb,submissionFile,'Delimiter','comma');
     
 end
 
