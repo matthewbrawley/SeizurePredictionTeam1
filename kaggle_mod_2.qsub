@@ -1,0 +1,84 @@
+#!/bin/bash -l
+
+# The first line runs this as a bash script. The -l flag means
+# to treat this like a login shell which means it will pick up the
+# right environment settings to load Matlab using the module command.
+
+
+#### Set up Qsub
+# The $ after the # means this will be treated as a command
+# to qsub.   
+
+# Tell qsub you want an email at the beginning of the run, at the
+# end, or if the job is aborted
+#$ -m bea
+
+
+# Optionally join all of the output files into one.
+#$ -j y
+
+# Give the job a name.  Recommended! Helps keeps the output of your 
+# calculations organized.
+#$ -N kaggle_Run_1a
+
+
+# Set a time limit.  The default is 12 hours. If you need less than that, just
+# let it use the default.  A good rule of thumb is to set the time request to 
+# 2x what you think it'll need.  Here the time limit is set 24 hours
+# as an example.
+#$ -l h_rt=96:00:00
+
+
+# Here you select the number of processors to use. Choose, 4, 8, or 16  CPUs:
+#$ -pe omp 16
+
+
+### Now setup and run Matlab.
+
+# Set a source folder. This way you can easily move or rename the original 
+# folder.
+SOURCE_FOLDER=/project/ece601 
+
+# Set an output folder.  This uses the JOB_NAME variable which is set
+# above using the qsub -N command
+OUTPUT_FOLDER="/project/ece601/$JOB_NAME"
+
+
+
+# Make sure the output folder exists.
+mkdir $OUTPUT_FOLDER
+
+# Clear any modules loaded by default
+module purge
+
+# Load Matlab
+module load matlab/2016a
+
+
+
+
+
+# Now run Matlab.  The $NSLOTS variable is automatically set to the 
+# number of CPUs requested in the line above.  Tell matlab not to use a 
+# display and to run with at most $NSLOTS CPUs.  Also limit the 
+# parallel pool to the number of requested CPUs. If this isn't done
+# Matlab will try to use all available CPUs on the node.  The queue system will
+# notice it being greedy and kill the job without warning.
+
+
+
+# Copy data directory to scratch disk.  Takes 2-5 minutes.
+mkdir $TMPDIR/data
+mkdir $TMPDIR/Models
+mkdir $TMPDIR/Features
+cp -R $SOURCE_FOLDER/data/*  $TMPDIR/data
+
+# finally, run Matlab!
+matlab -nodisplay -r "addpath('$SOURCE_FOLDER') ;  tmpdir='$TMPDIR'; nslots=$NSLOTS ; scc_setup ; kaggle_seizure_prediction_workflow ; exit ;"
+
+# Move results to output folder.
+mv $TMPDIR/Features $OUTPUT_FOLDER
+mv $TMPDIR/Models $OUTPUT_FOLDER
+
+
+#### The $TMPDIR folder will be automatically deleted when the job is completed.
