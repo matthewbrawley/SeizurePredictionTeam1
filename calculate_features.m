@@ -82,6 +82,15 @@ for l=2:numSamps
     C(isinf(C)) = 0;    % make Inf become 0
     lxfreqbands = real(sort(eig(C)));
     
+    %% Coherence
+    % Find the spectral coherence in frequency spectrum
+    coh = [];
+    for iter = 1:nc-1
+        coh(:,iter) = mean(mscohere(D(:,iter),D(:,iter+1)));
+    end
+    coh(:,nc) = mean(mscohere(D(:,nc),D(:,1)));
+ 
+    
     %% Spectral entropy for dyadic bands
     % Find number of dyadic levels
     ldat = floor(nt/2);
@@ -131,6 +140,6 @@ for l=2:numSamps
     
     %% Compile all the features
     feat = [feat spentropy(:)' spedge(:)' lxchannels(:)' lxfreqbands(:)' spentropyDyd(:)' ...
-        lxchannelsDyd(:)' fd(:)' activity(:)' mobility(:)' complexity(:)' skew(:)' kurt(:)'];
+        lxchannelsDyd(:)' fd(:)' activity(:)' mobility(:)' complexity(:)' skew(:)' kurt(:)' coh(:)'];
 end
 end

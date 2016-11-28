@@ -45,7 +45,7 @@ segmentTypes = {'0','1'}; % Preictal (1) or interictal (0)
 %    based on features of the test data.
 opt.dataDir     = dataDir;
 opt.featureDir  = featureDir;
-opt.clustername = 'local';  % Or other clusters
+opt.clustername = 'local';% Or other clusters
 % Uncomment the following two lines if calling a non-local cluster
 % opt.numChunk    = 50;       % Process data by chunk to avoid overhead in parallel computing
 % opt.N           = 64;
@@ -78,4 +78,5 @@ training_label = step3_evaluate_models(subjectNames(1:3),opt);
 %
 % No need to calculate features if already did in step 1)
 opt.calculate = false;
-testing_label    = step4_predict_seizure(subjectNames(4:6),opt);
+testing_label    = step4_predict_seizure(subjectNames(1:6),opt);
+
