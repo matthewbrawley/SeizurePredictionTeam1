@@ -90,6 +90,14 @@ for l=2:numSamps
     end
     coh(:,nc) = mean(mscohere(D(:,nc),D(:,1)));
  
+    %% Haar Wavelet Coefficients
+    coe = zeros(4,16);
+    for iter1 = 1:nc
+        if isnan(sum(D(:,iter1)))
+        else
+            [coe(:,iter1),~] = haart(D(1:240000,iter1));
+        end
+    end
     
     %% Spectral entropy for dyadic bands
     % Find number of dyadic levels
@@ -140,6 +148,7 @@ for l=2:numSamps
     
     %% Compile all the features
     feat = [feat spentropy(:)' spedge(:)' lxchannels(:)' lxfreqbands(:)' spentropyDyd(:)' ...
-        lxchannelsDyd(:)' fd(:)' activity(:)' mobility(:)' complexity(:)' skew(:)' kurt(:)' coh(:)'];
+        lxchannelsDyd(:)' fd(:)' activity(:)' mobility(:)' complexity(:)' skew(:)' kurt(:)' ...
+        coh(:)' coe(:)'];
 end
 end
