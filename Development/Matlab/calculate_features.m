@@ -2,10 +2,10 @@ function feat = calculate_features(f)
 % CALCULATE_FEATURES computes a set of features that will be
 %    later on used to train a LASSO GLM model.
 %
-%    The set of features include: spectral entropy and Shannon’s
-%    entropy (MacKay, 2003) at six frequency bands: delta (0.1–4 Hz),
-%    theta (4–8 Hz), alpha (8–12 Hz), beta (12–30 Hz), low-gamma (30–70 Hz)
-%    and high gamma (70–180 Hz), and Shannon’s entropy in dyadic (between
+%    The set of features include: spectral entropy and Shannonâ€™s
+%    entropy (MacKay, 2003) at six frequency bands: delta (0.1â€“4 Hz),
+%    theta (4â€“8 Hz), alpha (8â€“12 Hz), beta (12â€“30 Hz), low-gamma (30â€“70 Hz)
+%    and high gamma (70â€“180 Hz), and Shannonâ€™s entropy in dyadic (between
 %    0.00167 and 109 Hz spaced by factors of 2n) frequency bands, the
 %    spectral edge at 50% power below 40 Hz, spectral correlation between
 %    channels in dyadic frequency bands, the time series correlation matrix
