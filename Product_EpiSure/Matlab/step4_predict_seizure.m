@@ -102,10 +102,33 @@ for i = 1:length(subjectNames) % loop over patients if more than 1
     % Note: thres (threshold) can be modified.
     label    = Ypreds > thres;
     
+    %Open Database Connection
+    conn = database.ODBCConnection('MySeizureData','root','root'); % open a database connection
+    
+    %make the cursor point after last row of data
+    curs = exec(conn,'select * from seizure_data');
+    curs = fetch(curs);
+    %curs.Data
+    
+    colnames = {'patient_id','file_name','class','time_stamp'};
+    tablename = 'seizure_data';
+    
     exp_name = {fileNames(:).name};
+    
+    %save the data to database
+    for k = 1:numFiles
+        data = {patientId,exp_name(i),double(label(k)),{datestr(now,'yyyy-mm-dd HH:MM:SS')}};
+        data_table = cell2table(data,'VariableNames',colnames);
+        fastinsert(conn,tablename,colnames,data_table);
+    end
+    
     save([savePath filesep subjectName '_predict'],'label','exp_name')
     % disp(sum(label))
     
 end
+
+%close database connection
+close(curs);
+close(conn);
 
 end
