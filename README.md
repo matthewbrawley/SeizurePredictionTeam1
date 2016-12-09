@@ -21,11 +21,11 @@ A team of students in Boston University's Graduate Program in Electrical and Com
 	2.2.1) Trained model (File name: 'train_3')
 	2.2.2) Folder containing Test files (Folder name: 'data') 
 	2.2.3) MATLAB scripts
-		i)   kaggle_seizure_prediction_workflow.m
+		i)   Episure_workflow.m
 		ii)  step1_generate_features.m
 		iii) step4_predict_seizure.m
 		iv)  calculate_features.m
 	STEP 2:
-	Then we 'Run' the kaggle_seizure_prediction_workflow.m, which will:
+	Then we 'Run' the Episure_workflow.m, which will:
 	-> Compute the features array for the test files
 	-> Evaluate the model based on test files: To determine whether the test files show a preictal or interictal stage
