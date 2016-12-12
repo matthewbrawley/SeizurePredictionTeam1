@@ -37,5 +37,6 @@ A team of students in Boston University's Graduate Program in Electrical and Com
 		3.2.1) The User logs in using the Username and password entered during registration and hits 'Log In'.
 		3.2.2) Forgot password screen: In case the patient forgets the password, the 'Forgot Password' button sends a new password to the email id given by the user.
 		3.2.3) In the next screen, the Patient adds the details of the Emergency Contact by clicking on 'Add/ Edit Emergency Contact'. This provides the patient with 2 options, either to enter the name and phone number on their own, or choose from the phone contacts list. To save the details, the patient hits the 'Submit' button. The next dialog box requests for confirmation before adding the Emergency contact.
-	
-		
+
+4) Updates
+	4.1) As soon as the Signal Processing part (Section 2) detects a seizure, the Android application sends a notification to the patient and emergency contacts' phones. 
