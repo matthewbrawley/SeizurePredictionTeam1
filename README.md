@@ -29,3 +29,13 @@ A team of students in Boston University's Graduate Program in Electrical and Com
 	Then we 'Run' the Episure_workflow.m, which will:
 	-> Compute the features array for the test files
 	-> Evaluate the model based on test files: To determine whether the test files show a preictal or interictal stage
+3) Running the Android app
+	3.1) New User- Registration
+		3.1.1) On opening the app, we click on 'New User' at the bottom, for the patient registration.
+		3.1.2) The patient enters their details (Name, email id, address, password) and checks the Terms and Conditions
+	3.2) Existing User- Login
+		3.2.1) The User logs in using the Username and password entered during registration and hits 'Log In'.
+		3.2.2) Forgot password screen: In case the patient forgets the password, the 'Forgot Password' button sends a new password to the email id given by the user.
+		3.2.3) In the next screen, the Patient adds the details of the Emergency Contact by clicking on 'Add/ Edit Emergency Contact'. This provides the patient with 2 options, either to enter the name and phone number on their own, or choose from the phone contacts list. To save the details, the patient hits the 'Submit' button. The next dialog box requests for confirmation before adding the Emergency contact.
+	
+		
